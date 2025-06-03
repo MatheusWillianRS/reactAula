@@ -1,0 +1,52 @@
+### CRIAR usuário
+POST http://localhost:3002/users
+Content-Type: application/json
+
+
+{
+  "name": "Ana Paula",
+  "email": "ana.paula@gmail.com"
+}
+###
+
+
+### LISTAR todos
+GET http://localhost:3002/users
+###
+
+
+### FILTRAR por nome
+GET http://localhost:3002/users?search=Ana
+###
+
+
+### BUSCAR por ID
+GET http://localhost:3002/users/ID_DO_USUARIO
+###
+
+
+### ATUALIZAR (PUT)
+PUT http://localhost:3002/users/ID_DO_USUARIO
+Content-Type: application/json
+
+
+{
+  "name": "Ana Julia",
+  "email": "ana.julia@gmail.com"
+}
+###
+
+
+### ATUALIZAR parcialmente (PATCH)
+PATCH http://localhost:3002/users/ID_DO_USUARIO
+Content-Type: application/json
+
+
+{
+  "email": "funciona.pad@email.com"
+}
+###
+
+
+### DELETAR
+DELETE http://localhost:3002/users/ID_DO_USUARIO
