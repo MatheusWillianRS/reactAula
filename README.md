@@ -96,15 +96,9 @@ DELETE
 Deleta usuário
 
 Tecnologias usadas
-React, Axios/Fetch
-
-
-Node.js, Fastify
-
-
-PostgreSQL Neon.tech
-
-
+React, Axios/Fetch,
+Node.js, Fastify,
+PostgreSQL Neon.tech,
 dotenv, ESLint, Prettier, CORS
 
 
