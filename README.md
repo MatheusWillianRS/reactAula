@@ -1,4 +1,4 @@
-# Projeto Cadastro de Usuários Full Stack
+# Projeto Cadastro de Usuários 
 
 ## O que é este projeto?
 
@@ -11,7 +11,7 @@ Aplicação full stack para cadastro de usuários, com:
 
 ## Como rodar o projeto?
 
-### 1. Clone o repositório
+### 1. Copie o repositório
 
 ```bash
 git clone https://github.com/seuusuario/seurepositorio.git
@@ -109,7 +109,7 @@ dotenv, ESLint, Prettier, CORS
 
 
 Autor
-Samira
+Matheus Rodrigues
 
 ---
 
@@ -117,7 +117,7 @@ Samira
 
 ```env
 # URL de conexão com o banco PostgreSQL na Neon.tech
-DATABASE_URL=postgresql://usuario:senha@host:porta/nome_do_banco?sslmode=require
+DATABASE_URL='postgresql://reactdb_owner:npg_C0UMXxtE3yPe@ep-muddy-brook-a5u06qnm-pooler.us-east-2.aws.neon.tech/reactdb?sslmode=require'
 
 # Porta do servidor Fastify (opcional)
 PORT=3002
