@@ -1,96 +1,45 @@
-import fastify from "fastify"
+import express from "express"
 import { DatabasePostgres } from "./dataBasePostgres.js"
-import cors from "@fastify/cors"
+import cors from 'cors'
+import './createTable.js'
 
 
-const server = fastify();
-
-
-//const database = new DatabaseMemory()
-
-
-await server.register(cors, {
-    origin: '*',
-    methods:['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-})
+const app = express();
+app.use(cors());
+app.use(express.json());
 
 
 const database = new DatabasePostgres();
 
+// GET /users
 
-//request pega informções do user
-server.post('/users', async (request, reply) => {
-    const { name, email} = request.body
-
-
-    await database.create({
-        name,
-        email,
-    })
-
-
-    return reply.status(201).send()
-})
-
-//Listar todos os usuários, opcionalmente filtrando por nome
-server.get('/users', async (request) => {
-    const search = request.query.search
-
-
-    const users = await database.list(search)
-
-
-    return users
-})
-
-//Atualizar completamente um usuário
-server.put('/users/:id', async (request, reply) => {
-    const userId = request.params.id
-    const { name, email} = request.body
-
-
-    await database.update(userId, {
-        name,
-        email,
-    })
-
-
-
-
-    return reply.status(204).send() //resposta teve sucesso mas não retorna um conteúdo
-})
-
-
-//  Atualizar parcialmente um usuário (atualiza apenas os campos fornecidos)
-server.patch('/users/:id', async (request, reply) => {
-    const userId = request.params.id;
-    const { name, email } = request.body;
-
-    try {
-        await database.partialUpdate(userId, {
-            name,
-            email,
-        });
-
-        return reply.status(204).send(); // Resposta bem-sucedida sem conteúdo
-    } catch (error) {
-        console.error(error);
-        return reply.status(500).send({ error: "Erro ao atualizar usuário" });
-    }
+app.get('/users', async(req, res) => {
+    const users = await database.list();
+    res.json(users);
 });
 
-// Remover um usuário
-server.delete('/users/:id', async (request, reply) => {
-    const userId = request.params.id
+//POST /users
+app.post('/users', async(req, res) => {
+    const user = req.body;
+    await database.create(user);
+    res.status(201).send();
+});
 
+//PUT /users/:id
+app.put('/users/:id', async(req, res) => {
+    const id = req.params.id;
+    const user = req.body;
+    await database.update (id, user);
+    res.status(204).send();
+});
 
-   await database.delete(userId)
+//DELETE /users/:id
+app.delete('/users/:id', async(req, res) => {
+    const id = req.params.id;
+    await database.delete(id);
+    res.status(204).send();
+});
 
-
-    return reply.status(204).send()
-})
-
-// Inicia o servidor na porta definida em .env ou padrão (3002)
-server.listen({
-    port: process.env.PORT ?? 3002,
-})
+app.listen(3001, () => {
+    console.log('Servidor rodando na porta 3001');
+});
