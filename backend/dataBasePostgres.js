@@ -3,25 +3,15 @@ import { sql } from "./sql.js"
 
 // Define a classe DatabasePostgres que gerencia operações no banco de dados
 export class DatabasePostgres{
-    async list(search){  // Método para listar usuários, permitindo busca por nome
-        let users
-
-
-        if(search){
-            users = await sql`select * from users where name ilike ${'%' + search + '%'}`
-        } else{
-            users = await sql`select * from users`
+    async list(){  // Método para listar usuários, permitindo busca por nome
+        try{
+            const result = await sql`SELECT * FROM users;`;
+            return result;
+        } catch(err){
+            console.log("Erro ao listar usuários: ", err);
+            return [];
         }
-
-
-        return users
     }
-
-    async getById(id) {
-        const result = await sql`SELECT * FROM users WHERE id = ${id}`
-        return result[0]
-    }
-
 
  // Método para criar um novo usuário no banco
     async create(user){
@@ -29,32 +19,25 @@ export class DatabasePostgres{
         const { name, email } = user
 
 
-        await sql`insert into users(id, name, email) VALUES (${userId}, ${name}, ${email})`
-
+        await sql`
+            INSERT INTO users(id, name, email) VALUES (${userId}, ${name}, ${email})
+        `;
 
     }
 
  // Método para atualizar completamente os dados de um usuário
     async update(id, user){
-        const { name, email } = user
-
-
-        await sql`update users set name = ${name}, email = ${email} where id = ${id}`
+        const { name, email } = user;
+        await sql`
+        UPDATE users
+        SET name = ${name}, email = ${email}
+        WHERE id = ${id}
+        `;
     }
    
  // Método para excluir um usuário do banco de dados
     async delete(id){
-        await sql`delete from users where id = ${id}`
+        await sql`DELETE FROM users WHERE id = ${id}`;
     }
-    // Método para atualização parcial de dados do usuário (PATCH)
-   async partialUpdate(id, data) {
-    await sql`
-        UPDATE users
-        SET name = COALESCE(${data.name}, name),
-            email = COALESCE(${data.email}, email)
-        WHERE id = ${id}
-    `;
-}
 }
 
-/* verificar dps */
